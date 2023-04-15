@@ -112,15 +112,15 @@ def ThinLens(f,X, aper=0, cen=[0,0]):
      Y=np.dot(M,X2)
 
    return(Y)
-   
-def ThickLensPC(d,n,R,X, aper=0, cen=[0,0]):
+
+def ThickLens(d,n,R1,R2,X, aper=0, cen=[0,0]):
    '''
-     thick plano-convex lens matrix (ray sees convex side first) and ray tranformation
+     thick lens matrix and ray transformation
      ray with radius>aper are left untouched
    '''
    M=np.zeros((4,4))
-   M[0,0]=M[2,2]=1.+(d*(1-n))/(n*R);     M[0,1]=M[2,3]=d/n; 
-   M[1,0]=M[3,2]=(1.-n)/R ; M[1,1]=M[3,3]=1.;
+   M[0,0]=M[2,2]=1.-(d/R1)*(1.-1./n);     M[0,1]=M[2,3]=d/n; 
+   M[1,0]=M[3,2]=-(n-1.)*((1./R1)-(1./R2))+(d/(R1*R2))*(2.-n-1./n) ; M[1,1]=M[3,3]=1.+(d/R2)*(1.-1./n);
 
 
    if aper==0:
@@ -131,7 +131,7 @@ def ThickLensPC(d,n,R,X, aper=0, cen=[0,0]):
      Y=np.dot(M,X2)
 
    return(Y)
-
+   
 def DMD(R ,X, angle=10 , cen=[0,0]):
    '''
      DMD simulation
