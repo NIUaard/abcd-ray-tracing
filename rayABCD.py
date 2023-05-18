@@ -162,7 +162,7 @@ def MLA(fmic, pitch, radius, thick, num, X):
       Simulate a MLA via piecewise matrices
 
         fmic        focal lens of microlens
-        pitch        pitch of MLA
+        pitch        pitch of MLA // center to center distance between microlenses
         radius        radius of the MLA (radius< pitch)
         thick        thickness of substrate // not used
         num     makes a numXnum array of micro lenses
@@ -171,11 +171,17 @@ def MLA(fmic, pitch, radius, thick, num, X):
    '''
    print((np.shape(X)))
    Y=X
+   Ynew = np.empty(shape=(4, 1))
+   print(len(Y[0,:]))
    Xc=Yc=np.linspace(-num/2.*pitch,num/2.*pitch, num)
    for j in range(num):
       for i in range(num):
-          X=ThinLens(fmic,X, radius, cen=[Xc[i], Yc[j]])
-   return(X)          
+          Y=ThinLens(fmic,X, radius, cen=[Xc[i], Yc[j]])
+          Ynew=np.append(Ynew,Y,axis=1)
+          #print([Xc[i],Yc[j]])
+          #print(Y)
+          print(np.shape(Ynew))
+   return(Ynew)         
 
 
 #
